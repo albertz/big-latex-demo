@@ -22,6 +22,7 @@
 comment.cut
 __pycache__
 .*.kate-swp
+.kile
 
 # Explicitly generated.
 /thesis*.pdf
