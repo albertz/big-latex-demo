@@ -1,0 +1,180 @@
+% https://tex.stackexchange.com/questions/552584/toc-link-to-figures-tables-does-not-work
+
+\documentclass[paper=a4,
+               fontsize=11pt,
+               DIV18,             % Bestimmt die Größe des Textbereichs (Std: 10)
+               BCOR15mm,           % Zusätzlicher Rand auf der Innenseite (Bindekorrektur)
+               twoside,           % beidseitiger Druck
+               headsepline,       % Kolumnentitel mit horizontaler Trennlinie
+               cleardoublepage=empty,  % Auf Leerseiten kein Kolumnentitel und keine Seitenzahlen
+               listof=totoc,       % Tabellen und Abbildungsverzeichnis ins Inhaltsverzeichnis
+               bibliography=totoc,  % Literaturverzeichnis ins Inhaltverzeichnis
+               % idxtotoc,         % Index ins Inhaltverzeichnis
+               %index=totoc,   % https://tex.stackexchange.com/questions/208478/koma-book-correct-hyperlink-to-the-index
+               english,          % oder ngerman
+               chapterprefix=false,     % ``Kapitel'' ... Bei nochapterprefix wird nichts ausgegeben
+               appendixprefix,
+               numbers=noenddot,  % appendix verursacht sonst, dass ein punkt hinter die chapters gesetzt wird
+               captions=tableheading,  % Tabellen Beschriftungen ueber der Tabelle
+               ]{scrbook}
+
+%\usepackage[pruefung]{RWTH-Fak1}
+%\usepackage[final]{RWTH-Fak1}
+\usepackage[draft]{RWTH-Fak1}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath}
+\usepackage[Bjarne]{fncychap}
+%\usepackage[refpage,intoc,noprefix]{nomencl}
+%\usepackage[nottoc, notlof, notlot]{tocbibind}
+%\usepackage[nottoc]{tocbibind}
+%\usepackage{tocbibind}
+
+\usepackage{makerobust}
+
+
+\usepackage{fancyhdr}
+\usepackage{bold-extra} % for \textsc in \sections
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+
+
+% If we include hyperref in its alphabetical position, it conflicts with
+% varioref (...)
+\usepackage[%
+hypertexnames=false,%
+bookmarks=true,%                   %%% generate bookmarks ...
+bookmarksnumbered=true,%           %%% ... with numbers
+]{hyperref}
+
+% https://tex.stackexchange.com/questions/516267/compatibility-of-hypertexnames-false-and-indexes
+\makeatletter
+\usepackage{etoolbox}
+\patchcmd\Hy@EveryPageBoxHook{\Hy@EveryPageAnchor}{\Hy@hypertexnamestrue\Hy@EveryPageAnchor}{}{\fail}
+\makeatother
+
+% varioref makes problems when used together with cleveref?
+% https://tex.stackexchange.com/questions/102490/cref-reference-format-for-label-type-undefined
+%\usepackage{varioref}
+\usepackage{cleveref}
+
+\usepackage[toc]{glossaries}
+%\usepackage{glossaries}
+
+% for original fncychap
+\makeatletter
+\DeclareOldFontCommand{\rm}{\normalfont\rmfamily}{\mathrm}
+\DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf}
+\DeclareOldFontCommand{\tt}{\normalfont\ttfamily}{\mathtt}
+\DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf}
+\DeclareOldFontCommand{\it}{\normalfont\itshape}{\mathit}
+\DeclareOldFontCommand{\sl}{\normalfont\slshape}{\@nomath\sl}
+\DeclareOldFontCommand{\sc}{\normalfont\scshape}{\@nomath\sc}
+\makeatother
+
+\pagestyle{headings}
+
+\title{Thesis}
+\actualpregrade{Diplom Mathematiker, Diplom Informatiker}
+\author{Albert Zeyer}
+\birthplace{Earth}
+\dateoforalexamination{24.\,Dezember 2042}
+\expertI{X}
+\expertII{Y}
+\grade{eines Doktors der Naturwissenschaften}
+
+\makeatother
+
+\renewcommand{\backmatter}{
+\renewcommand{\thechapter}{\Alph{chapter}}
+\setcounter{chapter}{0}
+}
+
+\makeatletter
+
+\makeglossaries
+
+\newacronym[%
+description={Recurrent neural network model.}
+]{lstm}{LSTM}{long short-term memory}
+
+
+
+% Number subsubsections
+\setcounter{secnumdepth}{2}
+
+% Remove the silly boxes around hyperlinks
+\hypersetup{ 
+pdfborder=0 0 0
+}
+
+\begin{document}
+
+\frontmatter
+
+% Cover {
+\pagestyle{empty}
+
+% See preamble.tex.
+\maketitle
+
+\cleardoublepage
+
+\vspace*{3cm}
+
+\begin{center}
+  Nice Quote
+\end{center}
+\vfill
+
+\cleardoublepage
+
+\pagestyle{empty}
+% }
+
+\newpage
+
+\tableofcontents
+
+\mainmatter
+\pagestyle{headings}
+
+\chapter{Introduction}
+...
+\Gls{lstm} \cite{hochreiter1997lstm}
+...
+
+Great results in \Cref{tab:sth}.
+
+\begin{table}[t]
+\centering
+\caption{Great table.}
+\label{tab:sth}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+lattices & training & epoch time & \multicolumn{2}{c|}{WER [\%]} \\
+{}       & {}       & [secs]  & dev & eval \\ \hline \hline
+small    & serial & 449  & \textbf{5.32} & \textbf{7.82} \\ \cline{2-5}
+{}       & parallel & \textbf{343}  & 5.63 & 8.23 \\ \hline \hline
+big      & serial   &   453        & 5.39 & 8.01 \\ \cline{2-5}
+{}       & parallel &   353        & 5.68 & 8.38 \\ \hline
+\end{tabular}
+\end{table}
+
+Yes.
+
+\chapter{Conclusion}
+...
+
+\backmatter
+
+\printglossary[title={Glossary}]
+
+\listoffigures
+
+\listoftables
+
+\bibliographystyle{i6bibliostyle}
+%\bibliographystyle{apalike}
+\bibliography{thesis}
+
+\end{document}
