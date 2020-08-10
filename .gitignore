@@ -1,0 +1,28 @@
+# Various generated files (Latex, Python).
+*.aux
+*.*~
+*.bbl
+*.blg
+*.glo
+*.ist
+*.loa
+*.lof
+*.log
+*.lot
+*.lol
+*.out
+*.toc
+*.fls
+*.glg
+*.gls
+*.brf
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+comment.cut
+__pycache__
+.*.kate-swp
+
+# Explicitly generated.
+/thesis*.pdf
+/test*.pdf
